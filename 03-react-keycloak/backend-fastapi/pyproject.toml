@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "simple-fastapi-backend"
+version = "0.1.0"
+description = ""
+authors = ["Lajos Cseppentő <1053931+LajosCseppento@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "backend_fastapi"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.92.0"
+fastapi-keycloak = "^1.0.7"
+pydantic = "^1.10.5"
+uvicorn = {extras = ["standard"], version = "^0.20.0"}
+python-keycloak = "^2.12.0"
+oic = "^1.5.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.1.0"
+flake8 = "^6.0.0"
+pylint = "^2.16.2"
+mypy = "^1.0.0"
+pytest = "^7.2.1"
+pytest-cov = "^4.0.0"
+pytest-html = "^3.2.0"
+pytest-mock = "^3.10.0"
+
+[tool.poetry.scripts]
+start = "backend_fastapi.main:start"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
