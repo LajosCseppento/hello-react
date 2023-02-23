@@ -1,23 +1,77 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ErrorBoundary } from "react-error-boundary";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 
-import NavBar from "./components/NavBar";
-import Home from "./components/Home";
-import Page1 from "./components/Page1";
-import Page2 from "./components/Page2";
+import EditablePage from "./components/EditablePage";
+import ErrorFallback from "./components/ErrorFallback";
 import Footer from "./components/Footer";
+import NavBar from "./components/NavBar";
+import Page from "./components/Page";
+import client from "./utils/client";
+
+function AppRoutes() {
+  const location = useLocation();
+
+  return (
+    <ErrorBoundary FallbackComponent={ErrorFallback} resetKeys={[location.key]}>
+      <Routes>
+        <Route
+          path="/"
+          element={<Page title="Home" request={client.getHome} />}
+        />
+        <Route
+          path="/page"
+          element={<Page title="Page" request={client.getPage} />}
+        />
+        <Route
+          path="/editable-page"
+          element={
+            <EditablePage
+              title="Editable Page"
+              getRequest={client.getEditablePage}
+              setRequest={client.postEditablePage}
+            />
+          }
+        />
+      </Routes>
+    </ErrorBoundary>
+  );
+}
 
 export default function App() {
+  // const location = useLocation();
+
   return (
     <div>
       <BrowserRouter>
         <NavBar />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/page1" element={<Page1 />} />
-          <Route path="/page2" element={<Page2 />} />
-        </Routes>
+        <AppRoutes />
+        {/* <ErrorBoundary
+          FallbackComponent={ErrorFallback}
+          // resetKeys={[window.location]}
+        >
+          <Routes>
+            <Route
+              path="/"
+              element={<Page2 title="Home" request={client.getHome} />}
+            />
+            <Route
+              path="/page"
+              element={<Page title="Page" request={client.getPage} />}
+            />
+            <Route
+              path="/editable-page"
+              element={
+                <EditablePage
+                  title="Editable Page"
+                  getRequest={client.getEditablePage}
+                  setRequest={client.postEditablePage}
+                />
+              }
+            />
+          </Routes>
+        </ErrorBoundary> */}
 
         <Footer />
       </BrowserRouter>

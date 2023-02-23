@@ -9,7 +9,7 @@ const KEYCLOAK_CONFIG: KeycloakConfig = {
 
 const KEYCLOAK_UPDATE_TOKEN_MIN_VALIDITY = 30;
 
-export type User = Pick<
+type User = Pick<
   KeycloakProfile,
   "id" | "username" | "email" | "firstName" | "lastName"
 >;
@@ -22,7 +22,7 @@ const UNKNOWN_USER: User = {
   lastName: "<unknown>",
 };
 
-export class AuthenticationProvider {
+class AuthenticationProvider {
   private _keycloak: Keycloak;
   private _user: User | null;
 
@@ -73,6 +73,7 @@ export class AuthenticationProvider {
             .loadUserProfile()
             .then((profile) => {
               this._user = profile;
+              window.oauth2Token = this._keycloak.token;
               console.debug("[auth] User", this._user);
             })
             .catch(() => {
@@ -90,6 +91,9 @@ export class AuthenticationProvider {
   };
 }
 
-export const auth = new AuthenticationProvider();
+const auth = new AuthenticationProvider();
 const AuthenticationContext = createContext<AuthenticationProvider>(auth);
+
+export { auth, AuthenticationProvider };
+export type { User };
 export default AuthenticationContext;

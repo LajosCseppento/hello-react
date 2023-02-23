@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+
 import AuthenticationContext from "../utils/auth";
 
 export default function UserInfo() {

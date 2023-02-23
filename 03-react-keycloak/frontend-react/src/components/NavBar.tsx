@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
 import UserInfo from "./UserInfo";
 
 export default function NavBar() {
@@ -10,9 +11,9 @@ export default function NavBar() {
         <div>
           <Link to="/">Home</Link>
           {" | "}
-          <Link to="/page1">Page 1</Link>
+          <Link to="/page">Page</Link>
           {" | "}
-          <Link to="/page2">Page 2</Link>
+          <Link to="/editable-page">Editable Page</Link>
           {" | "}
           <UserInfo />
         </div>

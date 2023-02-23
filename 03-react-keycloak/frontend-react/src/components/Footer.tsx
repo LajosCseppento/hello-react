@@ -5,7 +5,7 @@ export default function Footer() {
     <div>
       Source{" "}
       <a
-        href="https://github.com/LajosCseppento/hello-react"
+        href="https://github.com/LajosCseppento/hello-react/tree/main/03-react-keycloak"
         target="_blank"
         rel="noreferrer"
       >
