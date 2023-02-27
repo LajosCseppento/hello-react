@@ -1,13 +1,13 @@
-import React from "react";
-import { ErrorBoundary } from "react-error-boundary";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import React from 'react';
+import {ErrorBoundary} from 'react-error-boundary';
+import {BrowserRouter, Route, Routes, useLocation} from 'react-router-dom';
 
-import EditablePage from "./components/EditablePage";
-import ErrorFallback from "./components/ErrorFallback";
-import Footer from "./components/Footer";
-import NavBar from "./components/NavBar";
-import Page from "./components/Page";
-import client from "./utils/client";
+import EditablePage from './components/EditablePage';
+import ErrorFallback from './components/ErrorFallback';
+import Footer from './components/Footer';
+import NavBar from './components/NavBar';
+import Page from './components/Page';
+import client from './utils/client';
 
 function AppRoutes() {
   const location = useLocation();

@@ -1,8 +1,8 @@
-import React, { FormEvent, useEffect, useState } from "react";
-import { useErrorHandler } from "react-error-boundary";
-import { useLocation } from "react-router-dom";
+import React, {FormEvent, useEffect, useState} from 'react';
+import {useErrorHandler} from 'react-error-boundary';
+import {useLocation} from 'react-router-dom';
 
-import client, { doRequest } from "../utils/client";
+import client, {doRequest} from '../utils/client';
 
 export type EditablePageProps = {
   title: string;
@@ -11,17 +11,17 @@ export type EditablePageProps = {
 };
 
 export default function EditablePage(props: EditablePageProps) {
-  const [content, setContent] = useState("Loading...");
+  const [content, setContent] = useState('Loading...');
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const handleError = useErrorHandler(null);
 
   const reload = () => {
-    setContent("Loading...");
+    setContent('Loading...');
     setLoading(true);
     doRequest(
       props.getRequest,
-      (content) => {
+      content => {
         setContent(content);
         setLoading(false);
       },
@@ -37,7 +37,7 @@ export default function EditablePage(props: EditablePageProps) {
     event.preventDefault();
     doRequest(
       () => client.postEditablePage(content),
-      () => alert("Content saved!"),
+      () => alert('Content saved!'),
       handleError
     );
   };

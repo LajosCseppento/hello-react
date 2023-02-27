@@ -1,6 +1,6 @@
-import { AxiosError } from "axios";
-import React from "react";
-import { FallbackProps } from "react-error-boundary";
+import {AxiosError} from 'axios';
+import React from 'react';
+import {FallbackProps} from 'react-error-boundary';
 
 export default function ErrorFallback(props: FallbackProps) {
   const error = props.error;
@@ -21,7 +21,7 @@ export default function ErrorFallback(props: FallbackProps) {
   return (
     <div>
       <p>Something went wrong:</p>
-      <div style={{ whiteSpace: "pre-wrap" }}>{text}</div>
+      <div style={{whiteSpace: 'pre-wrap'}}>{text}</div>
       <button onClick={props.resetErrorBoundary}>Try again</button>
     </div>
   );

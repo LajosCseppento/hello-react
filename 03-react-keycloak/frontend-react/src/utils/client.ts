@@ -1,6 +1,6 @@
-import axios, { Axios, Method } from "axios";
+import axios, {Axios, Method} from 'axios';
 
-const BACKEND_ROOT_URL = "http://127.0.0.1:10302";
+const BACKEND_ROOT_URL = 'http://127.0.0.1:10302';
 
 type PageData = {
   content: string;
@@ -19,14 +19,14 @@ class Client {
     });
 
     http.interceptors.request.use(
-      (config) => {
+      config => {
         const token = window.oauth2Token;
         if (token) {
-          config.headers["Authorization"] = "Bearer " + token;
+          config.headers['Authorization'] = 'Bearer ' + token;
         }
         return config;
       },
-      (error) => {
+      error => {
         return Promise.reject(error);
       }
     );
@@ -34,22 +34,22 @@ class Client {
     return http;
   }
 
-  getHome = () => this.getPayloadContent("");
+  getHome = () => this.getPayloadContent('');
 
-  getPage = () => this.getPayloadContent("page");
+  getPage = () => this.getPayloadContent('page');
 
-  getEditablePage = () => this.getPayloadContent("editable-page");
+  getEditablePage = () => this.getPayloadContent('editable-page');
 
   postEditablePage = (content: string) =>
-    this.post("editable-page", { content: content });
+    this.post('editable-page', {content: content});
 
-  private get = (path: string) => this.request("GET", path, null);
+  private get = (path: string) => this.request('GET', path, null);
 
   private getPayloadContent = async (path: string) =>
     (await this.get(path)).data.content;
 
   private post = (path: string, payload: PageData) =>
-    this.request("POST", path, payload);
+    this.request('POST', path, payload);
 
   private request = async (
     method: Method,
@@ -74,7 +74,7 @@ class Client {
 
       return response;
     } catch (error) {
-      console.error("[client] Request failed", error);
+      console.error('[client] Request failed', error);
       throw error;
     }
   };
@@ -88,6 +88,6 @@ const doRequest = <T>(
   onrejected: (error: unknown) => void
 ) => request.call(null).then(onfulfilled).catch(onrejected);
 
-export { doRequest };
-export type { PageData as Payload };
+export {doRequest};
+export type {PageData as Payload};
 export default client;
