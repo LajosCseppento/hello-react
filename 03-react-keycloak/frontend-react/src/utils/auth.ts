@@ -12,7 +12,7 @@ const KEYCLOAK_UPDATE_TOKEN_MIN_VALIDITY = 30;
 type User = Pick<
   KeycloakProfile,
   'id' | 'username' | 'email' | 'firstName' | 'lastName'
-> & {authenticated: boolean};
+>;
 
 const UNKNOWN_USER: User = {
   id: '<unknown>',
@@ -20,7 +20,6 @@ const UNKNOWN_USER: User = {
   email: '<unknown>',
   firstName: '<unknown>',
   lastName: '<unknown>',
-  authenticated: false,
 };
 
 class AuthenticationProvider {
@@ -71,7 +70,7 @@ class AuthenticationProvider {
         return this._keycloak
           .loadUserProfile()
           .then(profile => {
-            this._user = {...profile, authenticated: true};
+            this._user = profile;
             window.oauth2Token = this._keycloak.token;
             console.debug('[auth] User', this._user);
           })
