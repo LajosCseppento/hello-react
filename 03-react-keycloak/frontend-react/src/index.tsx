@@ -18,7 +18,7 @@ setTimeout(() => {
   if (!authFinally) {
     root.render(<Typography>Authenticating...</Typography>);
   }
-}, 1000);
+}, 2000);
 
 auth.init().finally(() => {
   authFinally = true;

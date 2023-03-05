@@ -1,3 +1,4 @@
+import AppRoutes from './components/AppRoutes';
 import EditablePage from './components/EditablePage';
 import ErrorFallback from './components/ErrorFallback';
 import Footer from './components/Footer';
@@ -25,36 +26,6 @@ import {ErrorBoundary} from 'react-error-boundary';
 import {BrowserRouter, Route, Routes, useLocation} from 'react-router-dom';
 
 const drawerWidth = 240;
-
-function AppRoutes() {
-  const location = useLocation();
-
-  return (
-    <ErrorBoundary FallbackComponent={ErrorFallback} resetKeys={[location.key]}>
-      <Routes>
-        <Route
-          path="/"
-          element={<Page title="Home" request={client.getHome} />}
-        />
-        <Route
-          path="/page"
-          element={<Page title="Page" request={client.getPage} />}
-        />
-        <Route
-          path="/editable-page"
-          element={
-            <EditablePage
-              title="Editable Page"
-              getRequest={client.getEditablePage}
-              setRequest={client.postEditablePage}
-            />
-          }
-        />
-        <Route path="/profile" element={<ProfilePage />} />
-      </Routes>
-    </ErrorBoundary>
-  );
-}
 
 const App = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
