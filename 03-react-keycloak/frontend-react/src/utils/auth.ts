@@ -12,7 +12,7 @@ const KEYCLOAK_UPDATE_TOKEN_MIN_VALIDITY = 30;
 type User = Pick<
   KeycloakProfile,
   'id' | 'username' | 'email' | 'firstName' | 'lastName'
->;
+> & {authenticated: boolean};
 
 const UNKNOWN_USER: User = {
   id: '<unknown>',
@@ -20,6 +20,7 @@ const UNKNOWN_USER: User = {
   email: '<unknown>',
   firstName: '<unknown>',
   lastName: '<unknown>',
+  authenticated: false,
 };
 
 class AuthenticationProvider {
@@ -36,10 +37,6 @@ class AuthenticationProvider {
   }
 
   get currentUser(): User {
-    if (!this._user) {
-      alert('Something went wrong, try to log out and log in again');
-    }
-
     return this._user || UNKNOWN_USER;
   }
 
@@ -74,7 +71,7 @@ class AuthenticationProvider {
         return this._keycloak
           .loadUserProfile()
           .then(profile => {
-            this._user = profile;
+            this._user = {...profile, authenticated: true};
             window.oauth2Token = this._keycloak.token;
             console.debug('[auth] User', this._user);
           })
@@ -88,8 +85,8 @@ class AuthenticationProvider {
         this._keycloak.login();
         return Promise.reject();
       }
-    } catch {
-      return console.error('Authentication failed');
+    } catch (error) {
+      return console.error('Authentication failed', error);
     }
   }
 

@@ -16,11 +16,12 @@ import ListItemText from '@mui/material/ListItemText';
 import React, {useContext} from 'react';
 import {Link as RouterLink, useLocation} from 'react-router-dom';
 
-type SidebarItem = {
+class SidebarItem {
   title: string;
   path: string;
   icon: JSX.Element;
-};
+  secondaryAction?: JSX.Element;
+}
 
 const items: SidebarItem[][] = [
   [{title: 'Home', path: '/', icon: <HomeIcon />}],
