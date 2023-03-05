@@ -17,12 +17,12 @@ import {Link as RouterLink, useLocation} from 'react-router-dom';
 
 import AuthenticationContext from '@app/context/AuthenticationContext';
 
-class SidebarItem {
+type SidebarItem = {
   title: string;
   path: string;
   icon: JSX.Element;
   secondaryAction?: JSX.Element;
-}
+};
 
 const items: SidebarItem[][] = [
   [{title: 'Home', path: '/', icon: <HomeIcon />}],
