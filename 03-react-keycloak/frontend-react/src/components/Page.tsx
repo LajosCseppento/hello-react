@@ -1,8 +1,8 @@
+import {doRequest} from '../utils/client';
+import Typography from '@mui/material/Typography';
 import React, {useEffect, useState} from 'react';
 import {useErrorHandler} from 'react-error-boundary';
 import {useLocation} from 'react-router-dom';
-
-import {doRequest} from '../utils/client';
 
 export type PageProps = {
   title: string;
@@ -21,8 +21,9 @@ export default function Page(props: PageProps) {
 
   return (
     <>
-      <h2>{props.title}</h2>
-      <div style={{whiteSpace: 'pre-wrap'}}>{content}</div>
+      <Typography variant="h2">{props.title}</Typography>
+      <Typography>{content}</Typography>
+      <Typography style={{whiteSpace: 'pre-wrap'}}>{content}</Typography>
     </>
   );
 }

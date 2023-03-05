@@ -86,7 +86,7 @@ const doRequest = <T>(
   request: () => Promise<T>,
   onfulfilled: (response: T) => void,
   onrejected: (error: unknown) => void
-) => request.call(null).then(onfulfilled).catch(onrejected);
+): Promise<void> => request.call(null).then(onfulfilled).catch(onrejected);
 
 export {doRequest};
 export type {PageData as Payload};
