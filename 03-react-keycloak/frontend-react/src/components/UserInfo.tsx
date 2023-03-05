@@ -1,4 +1,6 @@
 import AuthenticationContext from '../utils/auth';
+import {Button} from '@mui/material';
+import Typography from '@mui/material/Typography';
 import React, {useContext} from 'react';
 
 export default function UserInfo() {
@@ -6,8 +8,8 @@ export default function UserInfo() {
 
   return (
     <>
-      Hello {auth.currentUser.firstName}!{' '}
-      <button onClick={auth.logout}>Logout</button>
+      <Typography>Hello {auth.currentUser.firstName}!</Typography>
+      <Button onClick={auth.logout}>Logout</Button>
     </>
   );
 }

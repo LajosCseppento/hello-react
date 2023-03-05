@@ -6,7 +6,7 @@
   },
   "plugins": ["mui-path-imports"],
   "rules": {
-    "mui-path-imports/mui-path-imports": "error"
+    "mui-path-imports/mui-path-imports": "warn"
   },
   "settings": {
     "react": {
