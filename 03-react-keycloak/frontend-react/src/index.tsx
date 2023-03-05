@@ -12,12 +12,16 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-if (!auth.authenticated) {
-  // Hack to display something in case loading takes a while
-  root.render(<Typography>Redirecting to log in...</Typography>);
-}
+// Hack to display something in case loading takes a while
+let authFinally = false;
+setTimeout(() => {
+  if (!authFinally) {
+    root.render(<Typography>Authenticating...</Typography>);
+  }
+}, 1000);
 
 auth.init().finally(() => {
+  authFinally = true;
   if (auth.authenticated) {
     root.render(
       <React.StrictMode>

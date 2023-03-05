@@ -18,7 +18,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MenuIcon from '@mui/icons-material/Menu';
 import RestoreIcon from '@mui/icons-material/Restore';
-import {Stack} from '@mui/material';
+import {Container, Divider, Stack} from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
@@ -149,7 +149,6 @@ const App = () => {
 
           <Drawer
             variant="permanent"
-            // open
             sx={{
               display: {xs: 'none', sm: 'block'},
               width: drawerWidth,
@@ -164,16 +163,18 @@ const App = () => {
             <Box sx={{overflow: 'auto'}}>{sidebarMenu}</Box>
           </Drawer>
         </Box>
-        <Stack spacing={2}>
+        <Box sx={{width: '100%'}}>
           <Toolbar />
-          <Box component="main" sx={{flexGrow: 1, p: 3}}>
-            <AppRoutes />
-          </Box>
-          <Toolbar />
-          <Box component="div" sx={{flexGrow: 1, p: 3}}>
-            <Footer />
-          </Box>
-        </Stack>
+          <Stack spacing={2}>
+            <Box component="main" sx={{flexGrow: 1, p: 2}}>
+              <AppRoutes />
+            </Box>
+            <Divider />
+            <Box component="div" sx={{flexGrow: 1, p: 2}}>
+              <Footer />
+            </Box>
+          </Stack>
+        </Box>
       </Box>
     </BrowserRouter>
   );
