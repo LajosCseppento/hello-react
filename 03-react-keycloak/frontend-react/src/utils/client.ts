@@ -82,6 +82,7 @@ class Client {
 
 const client = new Client();
 
+// TODO remove
 const doRequest = <T>(
   request: () => Promise<T>,
   onfulfilled: (response: T) => void,

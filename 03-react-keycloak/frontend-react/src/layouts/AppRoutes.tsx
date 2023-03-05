@@ -3,6 +3,7 @@ import {ErrorBoundary} from 'react-error-boundary';
 import {Route, Routes, useLocation} from 'react-router-dom';
 
 import EditablePage from '@app/pages/EditablePage';
+import Home from '@app/pages/Home';
 import Page from '@app/pages/Page';
 import ProfilePage from '@app/pages/ProfilePage';
 import client from '@app/utils/client';
@@ -15,14 +16,8 @@ const AppRoutes = () => {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback} resetKeys={[location.key]}>
       <Routes>
-        <Route
-          path="/"
-          element={<Page title="Home" request={client.getHome} />}
-        />
-        <Route
-          path="/page"
-          element={<Page title="Page" request={client.getPage} />}
-        />
+        <Route path="/" element={<Home />} />
+        <Route path="/page" element={<Page />} />
         <Route
           path="/editable-page"
           element={

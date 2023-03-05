@@ -28,7 +28,12 @@ app.add_middleware(
 @app.get("/")
 async def get_root():
     time.sleep(1)
-    return PageData(content="Home page - no auth")
+    return PageData(
+        content=(
+            "Welcome to the home page! Sorry for the delay, but it's a feature ;-)\n"
+            "PS: This endpoint does not need any authentication"
+        )
+    )
 
 
 @app.get("/page")
