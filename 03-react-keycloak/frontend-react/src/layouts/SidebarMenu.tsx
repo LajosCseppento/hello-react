@@ -1,4 +1,3 @@
-import AuthenticationContext from '../utils/auth';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArticleIcon from '@mui/icons-material/Article';
 import EditIcon from '@mui/icons-material/Edit';
@@ -15,6 +14,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import React, {useContext} from 'react';
 import {Link as RouterLink, useLocation} from 'react-router-dom';
+
+import AuthenticationContext from '@app/context/AuthenticationContext';
 
 class SidebarItem {
   title: string;

@@ -89,5 +89,4 @@ const doRequest = <T>(
 ): Promise<void> => request.call(null).then(onfulfilled).catch(onrejected);
 
 export {doRequest};
-export type {PageData as Payload};
 export default client;

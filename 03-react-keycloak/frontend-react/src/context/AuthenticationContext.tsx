@@ -96,8 +96,8 @@ class AuthenticationProvider {
 }
 
 const auth = new AuthenticationProvider();
-const AuthenticationContext = createContext<AuthenticationProvider>(auth);
 
-export {auth, AuthenticationProvider};
-export type {User};
+export {auth};
+
+const AuthenticationContext = createContext<AuthenticationProvider>(auth);
 export default AuthenticationContext;

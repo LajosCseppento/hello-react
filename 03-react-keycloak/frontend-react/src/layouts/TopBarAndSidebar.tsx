@@ -1,8 +1,9 @@
-import Sidebar from './Sidebar';
-import TopBar from './TopBar';
 import React from 'react';
 
-const TopBarAndSidebar = () => {
+import Sidebar from './Sidebar';
+import TopBar from './TopBar';
+
+export const TopBarAndSidebar = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const toggleDrawer = (open?: boolean) => (event: React.SyntheticEvent) => {
     if (

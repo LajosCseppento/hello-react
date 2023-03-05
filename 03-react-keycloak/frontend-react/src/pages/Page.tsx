@@ -1,8 +1,9 @@
-import {doRequest} from '../utils/client';
 import Typography from '@mui/material/Typography';
 import React, {useEffect, useState} from 'react';
 import {useErrorHandler} from 'react-error-boundary';
 import {useLocation} from 'react-router-dom';
+
+import {doRequest} from '@app/utils/client';
 
 export type PageProps = {
   title: string;

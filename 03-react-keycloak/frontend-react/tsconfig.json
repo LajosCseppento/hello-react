@@ -2,6 +2,15 @@
   "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
     "rootDir": ".",
+    "baseUrl": "src",
+    "paths": {
+      "@app/components/*": ["components/*"],
+      "@app/context/*": ["context/*"],
+      "@app/hooks/*": ["hooks/*"],
+      "@app/layouts/*": ["layouts/*"],
+      "@app/pages/*": ["pages/*"],
+      "@app/utils/*": ["utils/*"]
+    },
     "outDir": "build",
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],

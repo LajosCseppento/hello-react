@@ -1,5 +1,3 @@
-import App from './App';
-import {auth} from './utils/auth';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -7,6 +5,10 @@ import '@fontsource/roboto/700.css';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+
+import {auth} from '@app/context/AuthenticationContext';
+
+import App from './App';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

@@ -1,9 +1,10 @@
-import SidebarMenu from './SidebarMenu';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Toolbar from '@mui/material/Toolbar';
 import React from 'react';
+
+import SidebarMenu from './SidebarMenu';
 
 const drawerWidth = 240;
 

@@ -1,4 +1,3 @@
-import client, {doRequest} from '../utils/client';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SendIcon from '@mui/icons-material/Send';
 import Alert from '@mui/material/Alert';
@@ -18,6 +17,8 @@ import Typography from '@mui/material/Typography';
 import React, {FormEvent, useEffect, useState} from 'react';
 import {useErrorHandler} from 'react-error-boundary';
 import {useLocation} from 'react-router-dom';
+
+import client, {doRequest} from '@app/utils/client';
 
 export type EditablePageProps = {
   title: string;

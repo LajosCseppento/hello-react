@@ -1,4 +1,3 @@
-import AuthenticationContext from '../utils/auth';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,6 +5,8 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import React, {useContext} from 'react';
+
+import AuthenticationContext from '@app/context/AuthenticationContext';
 
 const ProfilePage = () => {
   const currentUser = useContext(AuthenticationContext).currentUser;
