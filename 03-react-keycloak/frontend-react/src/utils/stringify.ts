@@ -19,7 +19,7 @@ const errorCauseChain = (error: Error) => {
   const chain: unknown[] = [];
 
   let curr: unknown = error.cause;
-  while (curr !== null) {
+  while (curr !== null && curr !== undefined) {
     if (curr instanceof Error) {
       chain.push(curr.toString());
       curr = curr.cause;
@@ -33,7 +33,6 @@ const errorCauseChain = (error: Error) => {
 };
 
 const replacer = (_key: string, value: unknown) => {
-  // console.log(value, typeof value, value instanceof Error);
   if (value === undefined) {
     return specialValue('undefined');
   } else if (typeof value === 'number' && !isFinite(value)) {
@@ -45,19 +44,13 @@ const replacer = (_key: string, value: unknown) => {
     return specialValue(value.toString());
   } else if (value instanceof Error) {
     return error(value);
-    // throw value;
   } else {
     return value;
   }
 };
 
 const stringify = (value: unknown): string => {
-  console.log(value);
-  console.log(decycle(value));
   return JSON.stringify(replacer('', decycle(value)), replacer, 2);
-  // JSON.stringify(replacer('', value), replacer, 2);
 };
-// flattedStringify(value, replacer, 2);
-// flattedStringify(replacer('', value), replacer);
 
 export default stringify;

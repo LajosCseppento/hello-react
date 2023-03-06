@@ -5,24 +5,101 @@ const check = (value: unknown, expected: string) => {
 };
 
 test('Test general data types', () => {
-  check(undefined, '[{"$specialValue":"1"},"undefined"]'); // TODO
-  check(null, '[null]'); // TODO
-
+  // booleans
   check(false, 'false');
   check(true, 'true');
 
+  // numbers
   check(0, '0');
   check(1, '1');
-  check(NaN, 'NaN');
-  check(-Infinity, '-Infinity');
-  check(Infinity, 'Infinity');
-  check(Error(), 'Infinity');
 
-  check(BigInt(123), '123');
+  // special numbers
+  check(
+    NaN,
+    `{
+  "$specialValue": "NaN"
+}`
+  );
+  check(
+    -Infinity,
+    `{
+  "$specialValue": "-Infinity"
+}`
+  );
+  check(
+    Infinity,
+    `{
+  "$specialValue": "Infinity"
+}`
+  );
+  check(
+    BigInt(123),
+    `{
+  "$specialValue": "BigInt(123)"
+}`
+  );
 
-  check('String', 'String');
+  // strings
+  check('a', '"a"');
+  check('bc\nd', '"bc\\nd"');
 
-  check(Symbol('sym'), 'Symbol(sym)');
+  // specials
+  check(null, 'null');
+  check(
+    undefined,
+    `{
+  "$specialValue": "undefined"
+}`
+  );
+  check(
+    Symbol('sym'),
+    `{
+  "$specialValue": "Symbol(sym)"
+}`
+  );
+  check(
+    function () {},
+    `{
+  "$specialValue": "function () { }"
+}`
+  );
+  check(
+    function (a: number, b: number) {
+      return a + b;
+    },
+    `{
+  "$specialValue": "function (a, b) {\\n        return a + b;\\n    }"
+}`
+  );
+  check(
+    (c: number, d: number) => c + d,
+    `{
+  "$specialValue": "function (c, d) { return c + d; }"
+}`
+  );
+
+  // errors
+  check(
+    Error('Error', {cause: Error('Cause')}),
+    `{
+  "$error": "Error: Error",
+  "$causeChain": [
+    "Error: Cause"
+  ]
+}`
+  );
+  check(
+    new Error('Error 2', {cause: new Error('Cause 2', {cause: NaN})}),
+    `{
+  "$error": "Error: Error 2",
+  "$causeChain": [
+    "Error: Cause 2",
+    {
+      "$specialValue": "NaN"
+    }
+  ]
+}`
+  );
 });
 
 test('Test complex object with special values', () => {
@@ -30,8 +107,7 @@ test('Test complex object with special values', () => {
     {
       booleans: [false, true],
       numbers: [0, 1],
-      // specialNumbers: [NaN, -Infinity, +Infinity, Infinity],
-      specialNumbers: [NaN, -Infinity, +Infinity, Infinity, BigInt(123)],
+      specialNumbers: [NaN, -Infinity, Infinity, BigInt(123)],
       strings: ['a', ' bc\nd '],
       specials: [
         null,
@@ -45,7 +121,7 @@ test('Test complex object with special values', () => {
       ],
       errors: [
         Error('Error', {cause: Error('Cause')}),
-        new Error('Error 2', {cause: new Error('Cause 2', {cause: undefined})}),
+        new Error('Error 2', {cause: new Error('Cause 2', {cause: NaN})}),
       ],
     },
     `{
@@ -63,9 +139,6 @@ test('Test complex object with special values', () => {
     },
     {
       "$specialValue": "-Infinity"
-    },
-    {
-      "$specialValue": "Infinity"
     },
     {
       "$specialValue": "Infinity"
@@ -98,10 +171,19 @@ test('Test complex object with special values', () => {
   ],
   "errors": [
     {
-      "$error": "TODO Error: Error"
+      "$error": "Error: Error",
+      "$causeChain": [
+        "Error: Cause"
+      ]
     },
     {
-      "$error": "TODO Error 2: Cause 2"
+      "$error": "Error: Error 2",
+      "$causeChain": [
+        "Error: Cause 2",
+        {
+          "$specialValue": "NaN"
+        }
+      ]
     }
   ]
 }`
