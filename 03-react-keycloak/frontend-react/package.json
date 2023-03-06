@@ -12,7 +12,6 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
     "@types/node": "^16.18.12",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
@@ -29,7 +28,7 @@
   "scripts": {
     "start": "cross-env PORT=10300 craco start",
     "build": "craco build",
-    "test": "craco test",
+    "test": "jest --watch",
     "eject": "craco eject",
     "clean": "gts clean",
     "compile": "tsc",
@@ -53,9 +52,11 @@
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
+    "@types/jest": "^29.4.0",
     "cross-env": "^7.0.3",
     "eslint-plugin-mui-path-imports": "^0.0.14",
     "gts": "^3.1.1",
-    "react-app-alias": "^2.2.2"
+    "react-app-alias": "^2.2.2",
+    "ts-jest": "^29.0.5"
   }
 }
