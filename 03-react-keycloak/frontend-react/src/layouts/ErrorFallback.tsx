@@ -10,17 +10,6 @@ import {isElementAccessExpression} from 'typescript';
 
 import PageTitle from '@app/components/PageTitle';
 
-const extractErrorText = (error: unknown): string => {
-  if (error instanceof AxiosError) {
-    const message = `${error.name}: ${error.message} [${error.code}]`;
-    const detail = error.response?.data?.detail;
-    return detail ? `${detail}\n\n(${message})` : message;
-  } else {
-    const text = error?.toString();
-    return text === undefined ? '<undefined>' : text;
-  }
-};
-
 const ErrorFallback = (props: FallbackProps) => {
   const error = props.error;
   let text;
