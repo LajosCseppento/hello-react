@@ -1,4 +1,7 @@
-/* Based on cycle.js, only contains decycle in TS, but with Error support. Original notice below. */
+/* Based on cycle.js, only contains decycle in TS, but with Error support. Original notice below.
+
+This is an overkill for solving a problem 99.99% will never happen. But nice practice for me.
+*/
 
 /*
  cycle.js
