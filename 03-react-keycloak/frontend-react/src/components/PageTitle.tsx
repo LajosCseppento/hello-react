@@ -6,7 +6,9 @@ type Props = {
 };
 
 const PageTitle = ({value}: Props) => (
-  <Typography variant="h2">{value}</Typography>
+  <Typography variant="h2" paddingBottom={2}>
+    {value}
+  </Typography>
 );
 
 export default PageTitle;
