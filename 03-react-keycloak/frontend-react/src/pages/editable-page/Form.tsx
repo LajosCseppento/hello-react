@@ -6,43 +6,31 @@ import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import React, {useEffect, useState} from 'react';
+import React, {DispatchWithoutAction, useState} from 'react';
 import {useErrorHandler} from 'react-error-boundary';
+import {FormContainer, TextFieldElement} from 'react-hook-form-mui';
 
-import PageTitle from '@app/components/PageTitle';
 import client from '@app/utils/client';
 
-const EditablePage = () => {
-  // const {result, error, pending} = usePromise(client.getEditablePage);
+type Props = {
+  initialContent: string;
+  reload: DispatchWithoutAction;
+};
 
-  const [content, setContent] = useState('Loading...');
+type Inputs = {
+  content: string;
+};
+
+const Form = ({initialContent, reload}: Props) => {
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
   const handleError = useErrorHandler(null);
 
-  const reload = async () => {
-    setLoading(true);
-
-    try {
-      setContent(await client.getEditablePage());
-    } catch (error) {
-      handleError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleContentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setContent(event.currentTarget.value);
-  };
-
-  const handleSubmit = async (event: React.SyntheticEvent) => {
-    event.preventDefault();
+  const onSubmit = async (data: Inputs) => {
     setLoading(true);
     try {
-      await client.postEditablePage(content);
+      await client.postEditablePage(data.content);
       setSaved(true);
     } catch (error) {
       handleError(error);
@@ -51,16 +39,13 @@ const EditablePage = () => {
     }
   };
 
-  useEffect(() => {
-    reload();
-  }, []);
-
   return (
     <>
-      <PageTitle value="Editable page" />
-
       <Box maxWidth={'md'}>
-        <form onSubmit={handleSubmit}>
+        <FormContainer
+          defaultValues={{content: initialContent}}
+          onSuccess={onSubmit}
+        >
           <FormControl disabled={loading} fullWidth>
             <Grid
               container
@@ -71,25 +56,30 @@ const EditablePage = () => {
             >
               <Grid item xs={12}>
                 <Typography>
-                  This page uses error boundary, no included error handler.
+                  This form&#39;s submit relies on the top-level error boundary
+                  to handle errors.
                 </Typography>
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <TextFieldElement
+                  name="content"
                   label="Content"
                   multiline
-                  maxRows={5}
-                  disabled={loading}
-                  onChange={handleContentChange}
-                  value={content}
+                  maxRows={15}
+                  //   disabled={loading}
+                  required
+                  // value={content}
                   fullWidth
-                />
+                />{' '}
+                {/* {errors.content && (
+                  <Box color="error">This field is required</Box>
+                )} */}
               </Grid>
               <Grid item xs={4}>
                 <Button
                   variant="outlined"
                   startIcon={<RefreshIcon />}
-                  disabled={loading}
+                  //   disabled={loading}
                   onClick={reload}
                   fullWidth
                 >
@@ -101,7 +91,7 @@ const EditablePage = () => {
                   type="submit"
                   variant="contained"
                   startIcon={<SendIcon />}
-                  disabled={loading}
+                  //   disabled={loading}
                   fullWidth
                 >
                   Submit
@@ -109,26 +99,23 @@ const EditablePage = () => {
               </Grid>
             </Grid>
           </FormControl>
-        </form>
-
-        <form onSubmit={handleSubmit}>
-          <Snackbar
-            open={saved}
-            autoHideDuration={6000}
+        </FormContainer>
+        <Snackbar
+          open={saved}
+          autoHideDuration={5000}
+          // onClose={setSaved(false)}
+        >
+          <Alert
             // onClose={setSaved(false)}
+            severity="success"
+            // sx={{width: '100%'}}
           >
-            <Alert
-              // onClose={setSaved(false)}
-              severity="success"
-              sx={{width: '100%'}}
-            >
-              Content saved!
-            </Alert>
-          </Snackbar>
-        </form>
+            Content saved!
+          </Alert>
+        </Snackbar>
       </Box>
     </>
   );
 };
 
-export default EditablePage;
+export default Form;

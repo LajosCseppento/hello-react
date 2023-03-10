@@ -2,11 +2,11 @@ import React from 'react';
 import {ErrorBoundary} from 'react-error-boundary';
 import {Route, Routes, useLocation} from 'react-router-dom';
 
-import EditablePage from '@app/pages/EditablePage';
 import FailingPage from '@app/pages/FailingPage';
 import Home from '@app/pages/Home';
 import Page from '@app/pages/Page';
 import ProfilePage from '@app/pages/ProfilePage';
+import EditablePage from '@app/pages/editable-page/EditablePage';
 
 import ErrorFallback from './ErrorFallback';
 

@@ -1,26 +1,22 @@
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
-import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 
 import usePromise from '@app/hooks/usePromise';
-import getErrorText from '@app/utils/error-helper';
 
 import ErrorAlert from './ErrorAlert';
 
 type Props = {
-  loader: () => Promise<string>;
+  contentLoader: () => Promise<string>;
 };
 
-const DynamicTypography = ({loader}: Props) => {
-  const {result, error, pending} = usePromise(loader);
+const DynamicTypography = ({contentLoader}: Props) => {
+  const {result: content, error, pending} = usePromise(contentLoader);
 
   return (
     <>
-      {result && (
-        <Typography sx={{whiteSpace: 'pre-wrap'}}>{result}</Typography>
+      {content && (
+        <Typography sx={{whiteSpace: 'pre-wrap'}}>{content}</Typography>
       )}
       {error && <ErrorAlert error={error} />}
       {pending && <CircularProgress />}

@@ -5,13 +5,13 @@ import PageTitle from './PageTitle';
 
 type Props = {
   title: string;
-  loader: () => Promise<string>;
+  contentLoader: () => Promise<string>;
 };
 
-const DynamicPage = ({title, loader}: Props) => (
+const DynamicPage = ({title, contentLoader}: Props) => (
   <>
     <PageTitle value={title} />
-    <DynamicTypography loader={loader} />
+    <DynamicTypography contentLoader={contentLoader} />
   </>
 );
 

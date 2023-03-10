@@ -21,6 +21,8 @@ $ docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=adm
 
 ## Frontend
 
+keycloak refresh token?!
+
 typescript 5.0.0 release on march 14 https://github.com/microsoft/TypeScript/issues/51362
 copy paste tsconfig baseDir/paths in 2 files
 (TypeScript 5 will allow extending several configurations)
