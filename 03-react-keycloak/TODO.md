@@ -27,8 +27,6 @@ typescript 5.0.0 release on march 14 https://github.com/microsoft/TypeScript/iss
 copy paste tsconfig baseDir/paths in 2 files
 (TypeScript 5 will allow extending several configurations)
 
-Backdrop -> for loading / or progress? / Skeleton
-Dialog?
 React query for loading?
 
 TODO navigation while loading, what to do

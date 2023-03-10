@@ -1,5 +1,6 @@
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SendIcon from '@mui/icons-material/Send';
+import {Backdrop, CircularProgress} from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -23,19 +24,19 @@ type Inputs = {
 };
 
 const Form = ({initialContent, reload}: Props) => {
-  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const handleError = useErrorHandler(null);
 
   const onSubmit = async (data: Inputs) => {
-    setLoading(true);
+    setSaving(true);
     try {
       await client.postEditablePage(data.content);
       setSaved(true);
     } catch (error) {
       handleError(error);
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
@@ -46,7 +47,7 @@ const Form = ({initialContent, reload}: Props) => {
           defaultValues={{content: initialContent}}
           onSuccess={onSubmit}
         >
-          <FormControl disabled={loading} fullWidth>
+          <FormControl fullWidth>
             <Grid
               container
               spacing={2}
@@ -66,20 +67,14 @@ const Form = ({initialContent, reload}: Props) => {
                   label="Content"
                   multiline
                   maxRows={15}
-                  //   disabled={loading}
                   required
-                  // value={content}
                   fullWidth
-                />{' '}
-                {/* {errors.content && (
-                  <Box color="error">This field is required</Box>
-                )} */}
+                />
               </Grid>
               <Grid item xs={4}>
                 <Button
                   variant="outlined"
                   startIcon={<RefreshIcon />}
-                  //   disabled={loading}
                   onClick={reload}
                   fullWidth
                 >
@@ -91,7 +86,6 @@ const Form = ({initialContent, reload}: Props) => {
                   type="submit"
                   variant="contained"
                   startIcon={<SendIcon />}
-                  //   disabled={loading}
                   fullWidth
                 >
                   Submit
@@ -100,16 +94,19 @@ const Form = ({initialContent, reload}: Props) => {
             </Grid>
           </FormControl>
         </FormContainer>
+        <Backdrop
+          sx={{color: '#fff', zIndex: theme => theme.zIndex.drawer + 1}}
+          open={saving}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
         <Snackbar
+          anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
           open={saved}
           autoHideDuration={5000}
-          // onClose={setSaved(false)}
+          onClose={() => setSaved(false)}
         >
-          <Alert
-            // onClose={setSaved(false)}
-            severity="success"
-            // sx={{width: '100%'}}
-          >
+          <Alert severity="success" sx={{width: '100%'}}>
             Content saved!
           </Alert>
         </Snackbar>
