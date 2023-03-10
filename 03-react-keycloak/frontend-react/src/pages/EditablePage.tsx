@@ -1,103 +1,117 @@
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SendIcon from '@mui/icons-material/Send';
 import Alert from '@mui/material/Alert';
-// import SendIcon from '@mui/icons-material';
-// import Button from '@mui/material/Button';
-// import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
-import FormLabel from '@mui/material/FormLabel';
-import Rating from '@mui/material/Rating';
+import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import React, {FormEvent, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useErrorHandler} from 'react-error-boundary';
-import {useLocation} from 'react-router-dom';
 
-import client, {doRequest} from '@app/utils/client';
+import PageTitle from '@app/components/PageTitle';
+import client from '@app/utils/client';
 
-export type EditablePageProps = {
-  title: string;
-  getRequest: () => Promise<string>;
-  setRequest: (content: string) => Promise<unknown>;
-};
+const EditablePage = () => {
+  // const {result, error, pending} = usePromise(client.getEditablePage);
 
-export default function EditablePage(props: EditablePageProps) {
   const [content, setContent] = useState('Loading...');
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
-  const location = useLocation();
   const handleError = useErrorHandler(null);
 
-  const reload = () => {
+  const reload = async () => {
     setLoading(true);
-    doRequest(
-      props.getRequest,
-      content => {
-        setContent(content);
-      },
-      handleError
-    ).finally(() => setLoading(false));
+
+    try {
+      setContent(await client.getEditablePage());
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleContentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setContent(event.currentTarget.value);
   };
 
-  const handleSubmit = (event: React.SyntheticEvent) => {
+  const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     setLoading(true);
-    doRequest(
-      () => client.postEditablePage(content),
-      () => {
-        setSaved(true);
-      },
-      handleError
-    ).finally(() => setLoading(false));
+    try {
+      await client.postEditablePage(content);
+      setSaved(true);
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     reload();
-  }, [location]);
+  }, []);
 
   return (
     <>
-      <h2>{props.title}</h2>
-      <div>
+      <PageTitle value="Editable page" />
+
+      <Box maxWidth={'md'}>
         <form onSubmit={handleSubmit}>
-          <FormGroup>
-            <FormControl disabled={true}>
-              {/* <fieldset > */}
-              <TextField
-                label="Content"
-                multiline
-                maxRows={5}
-                disabled={loading}
-                onChange={handleContentChange}
-                value={content}
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                startIcon={<SendIcon />}
-                disabled={loading}
-              >
-                Submit
-              </Button>
-              <Button
-                variant="outlined"
-                startIcon={<RefreshIcon />}
-                disabled={loading}
-                onClick={reload}
-              >
-                Reload
-              </Button>
-            </FormControl>
-          </FormGroup>
+          <FormControl disabled={loading} fullWidth>
+            <Grid
+              container
+              spacing={2}
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              alignContent="stretch"
+            >
+              <Grid item xs={12}>
+                <Typography>
+                  This page uses error boundary, no included error handler.
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Content"
+                  multiline
+                  maxRows={5}
+                  disabled={loading}
+                  onChange={handleContentChange}
+                  value={content}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <Button
+                  variant="outlined"
+                  startIcon={<RefreshIcon />}
+                  disabled={loading}
+                  onClick={reload}
+                  fullWidth
+                >
+                  Reload
+                </Button>
+              </Grid>
+              <Grid item xs={8}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  startIcon={<SendIcon />}
+                  disabled={loading}
+                  fullWidth
+                >
+                  Submit
+                </Button>
+              </Grid>
+            </Grid>
+          </FormControl>
+        </form>
+
+        <form onSubmit={handleSubmit}>
           <Snackbar
             open={saved}
             autoHideDuration={6000}
@@ -112,7 +126,9 @@ export default function EditablePage(props: EditablePageProps) {
             </Alert>
           </Snackbar>
         </form>
-      </div>
+      </Box>
     </>
   );
-}
+};
+
+export default EditablePage;

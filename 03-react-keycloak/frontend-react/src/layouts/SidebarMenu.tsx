@@ -28,6 +28,7 @@ const items: SidebarItem[][] = [
   [{title: 'Home', path: '/', icon: <HomeIcon />}],
   [
     {title: 'Page', path: '/page', icon: <ArticleIcon />},
+    {title: 'Failing Page', path: '/failing-page', icon: <ArticleIcon />},
     {title: 'Editable page', path: '/editable-page', icon: <EditIcon />},
   ],
 ];

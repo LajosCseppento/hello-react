@@ -1,5 +1,5 @@
+from backend_fastapi.error import raise_401
 from fastapi import Depends
-from fastapi.exceptions import HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from keycloak import KeycloakOpenID
 from keycloak.exceptions import KeycloakAuthenticationError, KeycloakInvalidTokenError
@@ -93,16 +93,6 @@ async def auth(token: str = Depends(oauth2_scheme)):
         if token_info["active"]:
             return AuthInfo(user_info=user_info, token_info=token_info)
         else:
-            throw_401()
+            raise_401()
     except (KeycloakAuthenticationError, KeycloakInvalidTokenError):
-        throw_401()
-
-
-def throw_401():
-    raise HTTPException(
-        status_code=401,
-        detail=(
-            "Invalid token. Please log in. If you are logged in, "
-            "then please log out and log in again."
-        ),
-    )
+        raise_401()

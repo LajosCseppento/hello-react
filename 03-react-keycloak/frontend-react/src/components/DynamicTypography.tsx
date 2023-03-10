@@ -8,6 +8,8 @@ import React from 'react';
 import usePromise from '@app/hooks/usePromise';
 import getErrorText from '@app/utils/error-helper';
 
+import ErrorAlert from './ErrorAlert';
+
 type Props = {
   loader: () => Promise<string>;
 };
@@ -20,14 +22,7 @@ const DynamicTypography = ({loader}: Props) => {
       {result && (
         <Typography sx={{whiteSpace: 'pre-wrap'}}>{result}</Typography>
       )}
-      {error && (
-        <Alert severity="error">
-          <AlertTitle>Oops, something went wrong...</AlertTitle>
-          <Typography style={{whiteSpace: 'pre-wrap'}}>
-            {getErrorText(error)}
-          </Typography>
-        </Alert>
-      )}
+      {error && <ErrorAlert error={error} />}
       {pending && <CircularProgress />}
     </>
   );

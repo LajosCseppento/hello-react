@@ -1,5 +1,6 @@
 import json
 import time
+from backend_fastapi.error import raise_400
 import uvicorn
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -51,17 +52,21 @@ async def get_page(auth_info: AuthInfo = Depends(auth)):
 
 
 @app.get("/editable-page")
-async def get_editable_page():
+async def get_editable_page(auth_info: AuthInfo = Depends(auth)):
     time.sleep(1)
     with open(EDITABLE_PAGE_DATA_FILE, encoding="utf-8") as file:
         return PageData(content=file.read())
 
 
 @app.post("/editable-page")
-async def post_editable_page(payload: PageData):
+async def post_editable_page(pageData: PageData):
+    if not pageData.content or not pageData.content.strip():
+        raise_400("The content cannot be empty")
+
+    time.sleep(1)
     with open(EDITABLE_PAGE_DATA_FILE, "w", encoding="utf-8") as file:
-        file.write(payload.content)
-    return payload
+        file.write(pageData.content)
+    return pageData
 
 
 def start():

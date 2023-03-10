@@ -34,38 +34,40 @@ class Client {
     return http;
   }
 
-  getHome = () => this.getPayloadContent('');
+  getHome = () => this.getPageDataContent('');
 
-  getPage = () => this.getPayloadContent('page');
+  getPage = () => this.getPageDataContent('page');
 
-  getEditablePage = () => this.getPayloadContent('editable-page');
+  getFailingPage = () => this.getPageDataContent('failing-page');
+
+  getEditablePage = () => this.getPageDataContent('editable-page');
 
   postEditablePage = (content: string) =>
-    this.post('editable-page', {content: content});
+    this.postPageData('editable-page', {content: content});
 
-  private get = (path: string) => this.request('GET', path, null);
+  private get = (path: string) => this.requestPageData('GET', path, null);
 
-  private getPayloadContent = async (path: string) =>
+  private getPageDataContent = async (path: string) =>
     (await this.get(path)).data.content;
 
-  private post = (path: string, payload: PageData) =>
-    this.request('POST', path, payload);
+  private postPageData = (path: string, pageData: PageData) =>
+    this.requestPageData('POST', path, pageData);
 
-  private request = async (
+  private requestPageData = async (
     method: Method,
     path: string,
-    payload: PageData | null
+    pageData: PageData | null
   ) => {
     console.debug(
       `[client] ${method} ${BACKEND_ROOT_URL}/${path} ...`,
-      payload
+      pageData
     );
 
     try {
       const response = await this._http.request<PageData>({
         method: method,
         url: path,
-        data: payload,
+        data: pageData,
       });
 
       console.debug(
@@ -82,12 +84,4 @@ class Client {
 
 const client = new Client();
 
-// TODO remove
-const doRequest = <T>(
-  request: () => Promise<T>,
-  onfulfilled: (response: T) => void,
-  onrejected: (error: unknown) => void
-): Promise<void> => request.call(null).then(onfulfilled).catch(onrejected);
-
-export {doRequest};
 export default client;
