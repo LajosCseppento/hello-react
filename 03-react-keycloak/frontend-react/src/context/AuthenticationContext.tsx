@@ -106,6 +106,3 @@ export {auth};
 
 const AuthenticationContext = createContext<AuthenticationProvider>(auth);
 export default AuthenticationContext;
-
-// TODO
-window.auth = auth;
