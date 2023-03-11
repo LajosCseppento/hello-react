@@ -19,9 +19,9 @@ $ docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=adm
 
 /opt/keycloak/bin/kc.sh export --dir /tmp/export --users realm_file
 
-## Frontend
+TODO extra: turned on event logging
 
-keycloak refresh token?!
+## Frontend
 
 typescript 5.0.0 release on march 14 https://github.com/microsoft/TypeScript/issues/51362
 copy paste tsconfig baseDir/paths in 2 files
