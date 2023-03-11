@@ -45,6 +45,7 @@ class AuthenticationProvider {
         .updateToken(KEYCLOAK_UPDATE_TOKEN_MIN_VALIDITY)
         .then(refreshed => {
           if (refreshed) {
+            this.updateGlobalToken();
             console.debug('[auth] Token was successfully refreshed');
           } else {
             console.debug('[auth] Token is still valid');
@@ -71,7 +72,7 @@ class AuthenticationProvider {
           .loadUserProfile()
           .then(profile => {
             this._user = profile;
-            window.oauth2Token = this._keycloak.token;
+            this.updateGlobalToken();
             console.debug('[auth] User:', this._user);
           })
           .catch(() => {
@@ -93,6 +94,10 @@ class AuthenticationProvider {
     console.debug('[auth] Logging out');
     this._keycloak.logout();
   };
+
+  private updateGlobalToken = () => {
+    window.oauth2Token = this._keycloak.token;
+  };
 }
 
 const auth = new AuthenticationProvider();
@@ -101,3 +106,6 @@ export {auth};
 
 const AuthenticationContext = createContext<AuthenticationProvider>(auth);
 export default AuthenticationContext;
+
+// TODO
+window.auth = auth;
