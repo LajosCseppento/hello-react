@@ -23,8 +23,8 @@ const usePromise = <T>(
 
   useEffect(
     () => {
-      doReset();
       const abortController = new AbortController();
+      doReset();
 
       promise
         .call(null, abortController.signal)
