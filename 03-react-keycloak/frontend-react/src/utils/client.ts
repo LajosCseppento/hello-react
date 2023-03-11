@@ -1,10 +1,29 @@
-import axios, {Axios, Method} from 'axios';
+import axios, {Axios, AxiosError, Method} from 'axios';
 
 const BACKEND_ROOT_URL = 'http://127.0.0.1:10302';
 
 type PageData = {
   content: string;
 };
+
+type CancellableRequest = {
+  method: string;
+  path: string;
+  abortController: AbortController;
+};
+enum ClientErrorCode {
+  Cancelled = 'CANCELLED',
+  Failed = 'FAILED',
+}
+
+class ClientError<T = unknown> extends Error {
+  readonly code: ClientErrorCode;
+
+  constructor(message: string, cause: T, code: ClientErrorCode) {
+    super(message, {cause: cause});
+    this.code = code;
+  }
+}
 
 class Client {
   private _http: Axios;
@@ -34,50 +53,76 @@ class Client {
     return http;
   }
 
-  getHome = () => this.getPageDataContent('');
+  getHome = (signal?: AbortSignal) => this.getPageDataContent('/', signal);
 
-  getPage = () => this.getPageDataContent('page');
+  getPage = (signal?: AbortSignal) => this.getPageDataContent('/page', signal);
 
-  getFailingPage = () => this.getPageDataContent('failing-page');
+  getFailingPage = (signal?: AbortSignal) =>
+    this.getPageDataContent('/failing-page', signal);
 
-  getEditablePage = () => this.getPageDataContent('editable-page');
+  getEditablePage = (signal?: AbortSignal) =>
+    this.getPageDataContent('/editable-page', signal);
 
-  postEditablePage = (content: string) =>
-    this.postPageData('editable-page', {content: content});
+  postEditablePage = (content: string, signal?: AbortSignal) =>
+    this.postPageData('editable-page', {content: content}, signal);
 
-  private get = (path: string) => this.requestPageData('GET', path, null);
+  private get = (path: string, signal?: AbortSignal) =>
+    this.requestPageData('GET', path, null, signal);
 
-  private getPageDataContent = async (path: string) =>
-    (await this.get(path)).data.content;
+  private getPageDataContent = async (path: string, signal?: AbortSignal) =>
+    (await this.get(path, signal)).data.content;
 
-  private postPageData = (path: string, pageData: PageData) =>
-    this.requestPageData('POST', path, pageData);
+  private postPageData = (
+    path: string,
+    pageData: PageData,
+    signal?: AbortSignal
+  ) => this.requestPageData('POST', path, pageData, signal);
 
   private requestPageData = async (
     method: Method,
     path: string,
-    pageData: PageData | null
+    pageData: PageData | null,
+    signal?: AbortSignal
   ) => {
-    console.debug(
-      `[client] ${method} ${BACKEND_ROOT_URL}/${path} ...`,
-      pageData
-    );
+    console.debug(`[client] ${method} ${path} ...`, pageData);
 
     try {
-      const response = await this._http.request<PageData>({
+      const request = this._http.request<PageData>({
         method: method,
         url: path,
         data: pageData,
+        signal: signal,
       });
 
+      const response = await request;
+
       console.debug(
-        `[client] ${method} ${BACKEND_ROOT_URL}/${path} - ${response.status} ${response.statusText}`
+        `[client] ${method} ${path} - ${response.status} ${response.statusText}`
       );
 
       return response;
     } catch (error) {
-      console.error('[client] Request failed', error);
-      throw error;
+      throw this.handleError(method, path, error);
+    }
+  };
+
+  private handleError = (method: string, path: string, error: unknown) => {
+    if (axios.isCancel(error)) {
+      console.debug('[client] Request cancelled', method.toUpperCase(), path);
+
+      throw new ClientError(
+        'Request cancelled',
+        error,
+        ClientErrorCode.Cancelled
+      );
+    } else {
+      console.error(
+        '[client] Request failed',
+        method.toUpperCase(),
+        path,
+        error
+      );
+      throw new ClientError('Request failed', error, ClientErrorCode.Failed);
     }
   };
 }

@@ -7,7 +7,7 @@ import usePromise from '@app/hooks/usePromise';
 import ErrorAlert from './ErrorAlert';
 
 type Props = {
-  contentLoader: () => Promise<string>;
+  contentLoader: (signal?: AbortSignal) => Promise<string>;
 };
 
 const DynamicTypography = ({contentLoader}: Props) => {

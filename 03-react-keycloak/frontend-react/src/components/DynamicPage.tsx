@@ -5,7 +5,7 @@ import PageTitle from './PageTitle';
 
 type Props = {
   title: string;
-  contentLoader: () => Promise<string>;
+  contentLoader: (signal?: AbortSignal) => Promise<string>;
 };
 
 const DynamicPage = ({title, contentLoader}: Props) => (

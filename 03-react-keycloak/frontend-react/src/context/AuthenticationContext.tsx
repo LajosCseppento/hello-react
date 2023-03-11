@@ -64,15 +64,15 @@ class AuthenticationProvider {
       });
 
       if (authenticated) {
-        console.debug('[auth] Authenticated: ', authenticated);
-        console.debug('[auth] Subject: ', this._keycloak.subject);
+        console.debug('[auth] Authenticated:', authenticated);
+        console.debug('[auth] Subject:', this._keycloak.subject);
 
         return this._keycloak
           .loadUserProfile()
           .then(profile => {
             this._user = profile;
             window.oauth2Token = this._keycloak.token;
-            console.debug('[auth] User', this._user);
+            console.debug('[auth] User:', this._user);
           })
           .catch(() => {
             console.error('[auth] Failed to load user profile');
