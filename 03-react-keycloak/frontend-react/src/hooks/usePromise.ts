@@ -1,7 +1,7 @@
 import {DependencyList, useEffect, useState} from 'react';
 
 /**
- * Promise hook. Creates `useState()` and `useEffect()` hooks under the hood.
+ * Cancellable promise hook. Creates `useState()` and `useEffect()` hooks under the hood.
  *
  * @param promise promise
  * @param deps `useEffect()` dependencies, `undefined` is translated to `[]`
