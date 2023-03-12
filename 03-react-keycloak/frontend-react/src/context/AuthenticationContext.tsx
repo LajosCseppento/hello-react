@@ -2,7 +2,7 @@ import Keycloak, {KeycloakConfig, KeycloakProfile} from 'keycloak-js';
 import {createContext} from 'react';
 
 const KEYCLOAK_CONFIG: KeycloakConfig = {
-  url: 'http://localhost:10301/',
+  url: 'http://127.0.0.1:10301/',
   realm: 'Demo',
   clientId: 'frontend',
 };
