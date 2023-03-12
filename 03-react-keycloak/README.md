@@ -1,6 +1,6 @@
 # hello-react / 03-react-keycloak
 
-Authentication with React, prototype of the new YCC stack (but no DB). [This guide](https://medium.com/devops-dudes/secure-front-end-react-js-and-back-end-node-js-express-rest-api-with-keycloak-daf159f0a94e) and [this one](https://www.section.io/engineering-education/keycloak-react-app) were a big help.
+Authentication with React, prototype of the new YCC stack (but no DB). [This guide](https://medium.com/devops-dudes/secure-front-end-react-js-and-back-end-node-js-express-rest-api-with-keycloak-daf159f0a94e) and [this one](https://www.section.io/engineering-education/keycloak-react-app) were a big help to start, but Googling, reading documentation, inspecting third-party source code and trying out many things were also essential. And of course it was great fun to finally be back to web!
 
 Components:
 
@@ -41,7 +41,7 @@ To manage the Keycloak instance log in with `admin` / `admin`.
    docker commit [KEYCLOAK CONTAINER ID] keycloak-snapshot
    ```
 
-3. Export all realms
+3. Export configuration:
 
    ```sh
    # Start the snapshot with a custom entrypoint
@@ -52,7 +52,7 @@ To manage the Keycloak instance log in with `admin` / `admin`.
    /opt/keycloak/bin/kc.sh export --dir /tmp/export --users realm_file
    ```
 
-4. Copy contents from the snapshot container
+4. Copy contents from the snapshot container:
 
    ```sh
    # Find snapshot container ID
