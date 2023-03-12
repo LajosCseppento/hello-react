@@ -15,7 +15,7 @@ export const TopBarAndSidebar = () => {
       return;
     }
 
-    setMobileOpen(typeof open === 'undefined' ? !mobileOpen : open);
+    setMobileOpen(open === undefined ? !mobileOpen : open);
   };
 
   return (

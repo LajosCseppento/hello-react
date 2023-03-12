@@ -15,6 +15,14 @@ type SidebarProps = {
 
 const Sidebar = (props: SidebarProps) => {
   const sidebarMenu = <SidebarMenu />;
+  const commonDrawerSx = {
+    width: drawerWidth,
+    flexShrink: 0,
+    '& .MuiDrawer-paper': {
+      width: drawerWidth,
+      boxSizing: 'border-box',
+    },
+  };
 
   return (
     <Box component="nav" onClick={props.toggleDrawer(false)}>
@@ -26,12 +34,7 @@ const Sidebar = (props: SidebarProps) => {
         ModalProps={{keepMounted: true}}
         sx={{
           display: {xs: 'block', sm: 'none'},
-          width: drawerWidth,
-          flexShrink: 0,
-          ['& .MuiDrawer-paper']: {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
+          ...commonDrawerSx,
         }}
       >
         <Toolbar />
@@ -42,12 +45,7 @@ const Sidebar = (props: SidebarProps) => {
         variant="permanent"
         sx={{
           display: {xs: 'none', sm: 'block'},
-          width: drawerWidth,
-          flexShrink: 0,
-          ['& .MuiDrawer-paper']: {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
+          ...commonDrawerSx,
         }}
       >
         <Toolbar />
