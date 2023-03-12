@@ -58,7 +58,7 @@ const Game = ({wifeMode}: Props) => {
     status = 'Next player: ' + nextPlayer;
   }
 
-  const moves = history.map((step, move) => {
+  const moves = history.map((_, move) => {
     const desc = move ? 'Go to move #' + move : 'Go to game start';
     return (
       <li key={move}>
