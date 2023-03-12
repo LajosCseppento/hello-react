@@ -13,26 +13,24 @@ const ErrorFallback = (props: FallbackProps) => {
   const boatCount = Math.floor(Math.random() * 10) + 1;
 
   return (
-    <>
-      <Alert severity="error">
-        <AlertTitle>Oops, something went terribly wrong :-(</AlertTitle>
-        <Typography padding={2} style={{whiteSpace: 'pre-wrap'}}>
-          {getErrorText(error)}
-        </Typography>
-        <Typography padding={2}>
-          No promise that{' '}
-          <Link href="#" onClick={props.resetErrorBoundary}>
-            reset
-          </Link>{' '}
-          will solve this issue, but worth a try...
-        </Typography>
-        <Typography padding={2}>
-          {[...Array(boatCount)].map((_, i) => (
-            <SailingIcon key={i} />
-          ))}
-        </Typography>
-      </Alert>
-    </>
+    <Alert severity="error">
+      <AlertTitle>Oops, something went terribly wrong :-(</AlertTitle>
+      <Typography padding={2} style={{whiteSpace: 'pre-wrap'}}>
+        {getErrorText(error)}
+      </Typography>
+      <Typography padding={2}>
+        No promise that{' '}
+        <Link href="#" onClick={props.resetErrorBoundary}>
+          reset
+        </Link>{' '}
+        will solve this issue, but worth a try...
+      </Typography>
+      <Typography padding={2}>
+        {[...Array(boatCount)].map((_, i) => (
+          <SailingIcon key={i} />
+        ))}
+      </Typography>
+    </Alert>
   );
 };
 

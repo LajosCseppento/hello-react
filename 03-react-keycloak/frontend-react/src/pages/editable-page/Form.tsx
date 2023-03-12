@@ -42,77 +42,75 @@ const Form = ({initialContent, reload}: Props) => {
   };
 
   return (
-    <>
-      <Box maxWidth={'md'}>
-        <FormContainer
-          defaultValues={{content: initialContent}}
-          onSuccess={onSubmit}
-        >
-          <FormControl fullWidth>
-            <Grid
-              container
-              spacing={2}
-              justifyContent="flex-start"
-              alignItems="flex-start"
-              alignContent="stretch"
-            >
-              <Grid item xs={12}>
-                <Typography>
-                  This form&#39;s submit relies on the top-level error boundary
-                  to handle errors.
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <TextFieldElement
-                  name="content"
-                  label="Content"
-                  multiline
-                  maxRows={15}
-                  required
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <Button
-                  variant="outlined"
-                  startIcon={<RefreshIcon />}
-                  onClick={reload}
-                  fullWidth
-                >
-                  Reload
-                </Button>
-              </Grid>
-              <Grid item xs={8}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  startIcon={<SendIcon />}
-                  fullWidth
-                >
-                  Submit
-                </Button>
-              </Grid>
+    <Box maxWidth={'md'}>
+      <FormContainer
+        defaultValues={{content: initialContent}}
+        onSuccess={onSubmit}
+      >
+        <FormControl fullWidth>
+          <Grid
+            container
+            spacing={2}
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            alignContent="stretch"
+          >
+            <Grid item xs={12}>
+              <Typography>
+                This form&#39;s submit relies on the top-level error boundary to
+                handle errors.
+              </Typography>
             </Grid>
-          </FormControl>
-        </FormContainer>
-        <Backdrop
-          sx={{color: '#fff', zIndex: theme => theme.zIndex.drawer + 1}}
-          open={saving}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
-        <Snackbar
-          anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
-          open={saved}
-          autoHideDuration={5000}
-          onClose={() => setSaved(false)}
-        >
-          <Alert severity="success" sx={{width: '100%'}}>
-            Content saved!
-          </Alert>
-        </Snackbar>
-      </Box>
-    </>
+            <Grid item xs={12}>
+              <TextFieldElement
+                name="content"
+                label="Content"
+                required
+                multiline
+                maxRows={15}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <Button
+                onClick={reload}
+                variant="outlined"
+                startIcon={<RefreshIcon />}
+                fullWidth
+              >
+                Reload
+              </Button>
+            </Grid>
+            <Grid item xs={8}>
+              <Button
+                type="submit"
+                variant="contained"
+                startIcon={<SendIcon />}
+                fullWidth
+              >
+                Submit
+              </Button>
+            </Grid>
+          </Grid>
+        </FormControl>
+      </FormContainer>
+      <Backdrop
+        sx={{color: '#fff', zIndex: theme => theme.zIndex.drawer + 1}}
+        open={saving}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <Snackbar
+        anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+        autoHideDuration={5000}
+        open={saved}
+        onClose={() => setSaved(false)}
+      >
+        <Alert severity="success" sx={{width: '100%'}}>
+          Content saved!
+        </Alert>
+      </Snackbar>
+    </Box>
   );
 };
 

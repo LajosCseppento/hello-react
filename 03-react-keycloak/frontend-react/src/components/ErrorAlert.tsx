@@ -12,18 +12,16 @@ type Props = {
 
 const ErrorAlert = ({error, fatal}: Props) => {
   return (
-    <>
-      <Alert severity="error">
-        <AlertTitle>
-          {fatal
-            ? 'Oops, something went terribly wrong :-('
-            : 'Oops, something went wrong...'}
-        </AlertTitle>
-        <Typography style={{whiteSpace: 'pre-wrap'}}>
-          {getErrorText(error)}
-        </Typography>
-      </Alert>
-    </>
+    <Alert severity="error">
+      <AlertTitle>
+        {fatal
+          ? 'Oops, something went terribly wrong :-('
+          : 'Oops, something went wrong...'}
+      </AlertTitle>
+      <Typography style={{whiteSpace: 'pre-wrap'}}>
+        {getErrorText(error)}
+      </Typography>
+    </Alert>
   );
 };
 
