@@ -36,6 +36,7 @@ class AuthenticationProvider {
   }
 
   get currentUser(): User {
+    // Simplify component code by not making it nullable
     return this._user || UNKNOWN_USER;
   }
 
