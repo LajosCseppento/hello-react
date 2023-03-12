@@ -1,10 +1,29 @@
-import axios, {Axios, Method} from 'axios';
+import axios, {Axios, AxiosError, Method} from 'axios';
 
 const BACKEND_ROOT_URL = 'http://127.0.0.1:10302';
 
 type PageData = {
   content: string;
 };
+
+type CancellableRequest = {
+  method: string;
+  path: string;
+  abortController: AbortController;
+};
+enum ClientErrorCode {
+  Cancelled = 'CANCELLED',
+  Failed = 'FAILED',
+}
+
+class ClientError<T = unknown> extends Error {
+  readonly code: ClientErrorCode;
+
+  constructor(message: string, cause: T, code: ClientErrorCode) {
+    super(message, {cause: cause});
+    this.code = code;
+  }
+}
 
 class Client {
   private _http: Axios;
@@ -34,60 +53,80 @@ class Client {
     return http;
   }
 
-  getHome = () => this.getPayloadContent('');
+  getHome = (signal?: AbortSignal) => this.getPageDataContent('/', signal);
 
-  getPage = () => this.getPayloadContent('page');
+  getPage = (signal?: AbortSignal) => this.getPageDataContent('/page', signal);
 
-  getEditablePage = () => this.getPayloadContent('editable-page');
+  getFailingPage = (signal?: AbortSignal) =>
+    this.getPageDataContent('/failing-page', signal);
 
-  postEditablePage = (content: string) =>
-    this.post('editable-page', {content: content});
+  getEditablePage = (signal?: AbortSignal) =>
+    this.getPageDataContent('/editable-page', signal);
 
-  private get = (path: string) => this.request('GET', path, null);
+  postEditablePage = (content: string, signal?: AbortSignal) =>
+    this.postPageData('editable-page', {content: content}, signal);
 
-  private getPayloadContent = async (path: string) =>
-    (await this.get(path)).data.content;
+  private get = (path: string, signal?: AbortSignal) =>
+    this.requestPageData('GET', path, null, signal);
 
-  private post = (path: string, payload: PageData) =>
-    this.request('POST', path, payload);
+  private getPageDataContent = async (path: string, signal?: AbortSignal) =>
+    (await this.get(path, signal)).data.content;
 
-  private request = async (
+  private postPageData = (
+    path: string,
+    pageData: PageData,
+    signal?: AbortSignal
+  ) => this.requestPageData('POST', path, pageData, signal);
+
+  private requestPageData = async (
     method: Method,
     path: string,
-    payload: PageData | null
+    pageData: PageData | null,
+    signal?: AbortSignal
   ) => {
-    console.debug(
-      `[client] ${method} ${BACKEND_ROOT_URL}/${path} ...`,
-      payload
-    );
+    console.debug(`[client] ${method} ${path} ...`, pageData);
 
     try {
-      const response = await this._http.request<PageData>({
+      const request = this._http.request<PageData>({
         method: method,
         url: path,
-        data: payload,
+        data: pageData,
+        signal: signal,
       });
 
+      const response = await request;
+
       console.debug(
-        `[client] ${method} ${BACKEND_ROOT_URL}/${path} - ${response.status} ${response.statusText}`
+        `[client] ${method} ${path} - ${response.status} ${response.statusText}`
       );
 
       return response;
     } catch (error) {
-      console.error('[client] Request failed', error);
-      throw error;
+      throw this.handleError(method, path, error);
+    }
+  };
+
+  private handleError = (method: string, path: string, error: unknown) => {
+    if (axios.isCancel(error)) {
+      console.debug('[client] Request cancelled', method.toUpperCase(), path);
+
+      throw new ClientError(
+        'Request cancelled',
+        error,
+        ClientErrorCode.Cancelled
+      );
+    } else {
+      console.error(
+        '[client] Request failed',
+        method.toUpperCase(),
+        path,
+        error
+      );
+      throw new ClientError('Request failed', error, ClientErrorCode.Failed);
     }
   };
 }
 
 const client = new Client();
 
-const doRequest = <T>(
-  request: () => Promise<T>,
-  onfulfilled: (response: T) => void,
-  onrejected: (error: unknown) => void
-) => request.call(null).then(onfulfilled).catch(onrejected);
-
-export {doRequest};
-export type {PageData as Payload};
 export default client;

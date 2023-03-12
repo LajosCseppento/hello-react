@@ -1,0 +1,4 @@
+{
+  "files.eol": "\n",
+  "python.formatting.provider": "black"
+}
