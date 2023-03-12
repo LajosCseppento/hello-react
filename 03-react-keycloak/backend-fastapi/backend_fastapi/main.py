@@ -1,19 +1,11 @@
-import json
-import time
+"""Application entry point."""
 import uvicorn
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from urllib.parse import urljoin
 
-
-from .auth import auth, AuthInfo
-from .config import CORS_ORIGINS, EDITABLE_PAGE_DATA_FILE, UVICORN_PORT, UVICORN_RELOAD
-
-
-class PageData(BaseModel):
-    content: str
-
+from .config import CORS_ORIGINS, UVICORN_PORT, UVICORN_RELOAD
+from .api.public import public
+from .api.secure import secure
 
 app = FastAPI()
 app.add_middleware(
@@ -23,43 +15,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.get("/")
-async def get_root():
-    time.sleep(1)
-    return PageData(content="Home page - no auth")
-
-
-@app.get("/page")
-async def get_page(auth_info: AuthInfo = Depends(auth)):
-    time.sleep(5)
-    return PageData(
-        content=(
-            "User info:\n\n"
-            f"{json.dumps(auth_info.user_info, indent=2)}"
-            "\n\n"
-            "Token info:\n\n"
-            f"{json.dumps(auth_info.token_info, indent=2)}"
-        )
-    )
-
-
-@app.get("/editable-page")
-async def get_editable_page():
-    time.sleep(1)
-    with open(EDITABLE_PAGE_DATA_FILE, encoding="utf-8") as file:
-        return PageData(content=file.read())
-
-
-@app.post("/editable-page")
-async def post_editable_page(payload: PageData):
-    with open(EDITABLE_PAGE_DATA_FILE, "w", encoding="utf-8") as file:
-        file.write(payload.content)
-    return payload
+app.include_router(public)
+app.include_router(secure)
 
 
 def start():
+    """Application starter."""
     uvicorn.run(
         "backend_fastapi.main:app",
         host="0.0.0.0",
