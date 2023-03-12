@@ -4,7 +4,7 @@ Authentication with React, prototype of YCC stack (but no DB). [This guide](http
 
 Components:
 
-- `frontend-react`: as the name suggests a React frontend, port 10300 (TypeScript, MUI, Axios, gts)
+- `frontend-react`: as the name suggests a React frontend, port 10300 (TypeScript)
 - `keycloak`: Keycloak service, port 10301 (Docker)
 - `backend-fastapi`: FastAPI backend, port 13002 (Python)
 

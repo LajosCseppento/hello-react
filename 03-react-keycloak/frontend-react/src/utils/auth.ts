@@ -36,7 +36,10 @@ class AuthenticationProvider {
   }
 
   get currentUser(): User {
-    // Simplify component code by not making it nullable
+    if (!this._user) {
+      alert('Something went wrong, try to log out and log in again');
+    }
+
     return this._user || UNKNOWN_USER;
   }
 
@@ -46,7 +49,6 @@ class AuthenticationProvider {
         .updateToken(KEYCLOAK_UPDATE_TOKEN_MIN_VALIDITY)
         .then(refreshed => {
           if (refreshed) {
-            this.updateGlobalToken();
             console.debug('[auth] Token was successfully refreshed');
           } else {
             console.debug('[auth] Token is still valid');
@@ -66,15 +68,15 @@ class AuthenticationProvider {
       });
 
       if (authenticated) {
-        console.debug('[auth] Authenticated:', authenticated);
-        console.debug('[auth] Subject:', this._keycloak.subject);
+        console.debug('[auth] Authenticated: ', authenticated);
+        console.debug('[auth] Subject: ', this._keycloak.subject);
 
         return this._keycloak
           .loadUserProfile()
           .then(profile => {
             this._user = profile;
-            this.updateGlobalToken();
-            console.debug('[auth] User:', this._user);
+            window.oauth2Token = this._keycloak.token;
+            console.debug('[auth] User', this._user);
           })
           .catch(() => {
             console.error('[auth] Failed to load user profile');
@@ -86,8 +88,8 @@ class AuthenticationProvider {
         this._keycloak.login();
         return Promise.reject();
       }
-    } catch (error) {
-      return console.error('Authentication failed', error);
+    } catch {
+      return console.error('Authentication failed');
     }
   }
 
@@ -95,15 +97,11 @@ class AuthenticationProvider {
     console.debug('[auth] Logging out');
     this._keycloak.logout();
   };
-
-  private updateGlobalToken = () => {
-    window.oauth2Token = this._keycloak.token;
-  };
 }
 
 const auth = new AuthenticationProvider();
-
-export {auth};
-
 const AuthenticationContext = createContext<AuthenticationProvider>(auth);
+
+export {auth, AuthenticationProvider};
+export type {User};
 export default AuthenticationContext;

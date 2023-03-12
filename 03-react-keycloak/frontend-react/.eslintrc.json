@@ -4,10 +4,6 @@
     "browser": true,
     "jest": true
   },
-  "plugins": ["mui-path-imports"],
-  "rules": {
-    "mui-path-imports/mui-path-imports": "warn"
-  },
   "settings": {
     "react": {
       "version": "detect"

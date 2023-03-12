@@ -2,19 +2,9 @@
   "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
     "rootDir": ".",
-    "baseUrl": "src",
-    "paths": {
-      "@app/components/*": ["components/*"],
-      "@app/context/*": ["context/*"],
-      "@app/hooks/*": ["hooks/*"],
-      "@app/layouts/*": ["layouts/*"],
-      "@app/pages/*": ["pages/*"],
-      "@app/utils/*": ["utils/*"]
-    },
     "outDir": "build",
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "allowSyntheticDefaultImports": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -22,5 +12,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src"]
+  "include": ["src/**/*.ts", "test/**/*.ts"]
 }
