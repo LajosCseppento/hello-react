@@ -1,3 +1,4 @@
+"""Keycloak authentication components."""
 from backend_fastapi.error import raise_401
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
@@ -14,6 +15,8 @@ from .config import (
 
 
 class AuthInfo(BaseModel):
+    """Authentication info."""
+
     # {
     #   "sub": "f1d54a64-2f67-4a49-860e-6d74cfa1e319",
     #   "email_verified": false,
@@ -72,6 +75,11 @@ class AuthInfo(BaseModel):
 
 
 def init_oauth2_scheme():
+    """Initialises OAuth 2 scheme.
+
+    Returns:
+        OAuth2PasswordBearer: bearer
+    """
     token_endpoint = keycloak.well_known()["token_endpoint"]
     return OAuth2PasswordBearer(tokenUrl=token_endpoint)
 
@@ -86,13 +94,24 @@ oauth2_scheme = init_oauth2_scheme()
 
 
 async def auth(token: str = Depends(oauth2_scheme)):
+    """Authentication dependency.
+
+    Args:
+        token (str): OAuth 2 scheme bearer
+
+    Raises:
+        HTTPException: 401 Unauthorized
+
+    Returns:
+        AuthInfo: authentication info
+    """
     try:
-        user_info = keycloak.userinfo(token)
+        user_info = keycloak.userinfo(token)  # cspell:disable-line
         token_info = keycloak.introspect(token)
 
         if token_info["active"]:
             return AuthInfo(user_info=user_info, token_info=token_info)
         else:
-            raise_401()
+            raise raise_401()
     except (KeycloakAuthenticationError, KeycloakInvalidTokenError):
-        raise_401()
+        raise raise_401()
