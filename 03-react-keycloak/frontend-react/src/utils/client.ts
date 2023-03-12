@@ -1,4 +1,4 @@
-import axios, {Axios, AxiosError, Method} from 'axios';
+import axios, {Axios, Method} from 'axios';
 
 const BACKEND_ROOT_URL = 'http://127.0.0.1:10302';
 
@@ -6,11 +6,6 @@ type PageData = {
   content: string;
 };
 
-type CancellableRequest = {
-  method: string;
-  path: string;
-  abortController: AbortController;
-};
 enum ClientErrorCode {
   Cancelled = 'CANCELLED',
   Failed = 'FAILED',

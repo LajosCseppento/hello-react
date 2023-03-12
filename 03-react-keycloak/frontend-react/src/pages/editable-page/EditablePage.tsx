@@ -18,7 +18,7 @@ const EditablePage = () => {
 
   return (
     <>
-      <PageTitle value="Editable page" />
+      <PageTitle value="Editable Page" />
 
       {initialContent && (
         <Form initialContent={initialContent} reload={forceUpdate} />
