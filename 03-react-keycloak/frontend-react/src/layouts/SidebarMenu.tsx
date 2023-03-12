@@ -29,7 +29,7 @@ const items: SidebarItem[][] = [
   [
     {title: 'Page', path: '/page', icon: <ArticleIcon />},
     {title: 'Failing Page', path: '/failing-page', icon: <ArticleIcon />},
-    {title: 'Editable page', path: '/editable-page', icon: <EditIcon />},
+    {title: 'Editable Page', path: '/editable-page', icon: <EditIcon />},
   ],
 ];
 
